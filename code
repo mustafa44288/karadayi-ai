@@ -1,24 +1,47 @@
-<div class="box">
-  <h1>karadayı.ai </h1>
-  <input id="q" placeholder="Uygulama, site veya bilgi ara">
-  <button onclick="go()">Ara</button>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>karadayı.AI - Gerçek Arama ve Görseller</title>
+  <meta name="description" content="karadayı.AI ile gerçek görseller ve alışveriş ürünlerini keşfet.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>karadayı.AI 🔍</h1>
+    <input id="q" placeholder="BMW, kedi, telefon..." />
+    <button onclick="run()">Ara</button>
+
+    <h2>🖼️ Gerçek Görseller</h2>
+    <div id="images" class="grid"></div>
+
+    <h2>🛒 Alışveriş</h2>
+    <div id="shop" class="grid"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 body {
-  background:#0f0f0f;
+  background:#0b1220;
   color:white;
   font-family:Arial;
+  text-align:center;
+  margin:0;
+  padding:0;
 }
 
-.box {
-  width:500px;
-  margin:100px auto;
-  text-align:center;
+.container {
+  max-width:900px;
+  margin:40px auto;
 }
 
 input {
-  width:80%;
+  width:70%;
   padding:12px;
   font-size:16px;
+  margin-bottom:10px;
 }
 
 button {
@@ -26,38 +49,56 @@ button {
   font-size:16px;
   cursor:pointer;
 }
-function go() {
-  let q = document.getElementById("q").value.toLowerCase().trim();
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+.grid img {
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.card {
+  background:#1e293b;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+}
+function run() {
+  const q = document.getElementById("q").value.trim();
   if (!q) return;
 
-  const apps = {
-    "youtube": "https://www.youtube.com/results?search_query=",
-    "instagram": "https://www.instagram.com/",
-    "whatsapp": "https://wa.me/",
-    "facebook": "https://www.facebook.com/search/top/?q=",
-    "twitter": "https://twitter.com/search?q=",
-    "x": "https://twitter.com/search?q=",
-    "spotify": "https://open.spotify.com/search/",
-    "tiktok": "https://www.tiktok.com/search?q=",
-    "maps": "https://www.google.com/maps/search/",
-    "harita": "https://www.google.com/maps/search/",
-    "play store": "https://play.google.com/store/search?q=",
-    "app store": "https://www.apple.com/app-store/",
-    "amazon": "https://www.amazon.com/s?k=",
-    "wikipedia": "https://tr.wikipedia.org/wiki/"
-  };
+  const imgBox = document.getElementById("images");
+  const shopBox = document.getElementById("shop");
 
-  for (let key in apps) {
-    if (q.startsWith(key)) {
-      let term = q.replace(key, "").trim();
-      window.open(apps[key] + encodeURIComponent(term), "_blank");
-      return;
-    }
+  imgBox.innerHTML = "";
+  shopBox.innerHTML = "";
+
+  // Her kelime için 6 adet görsel
+  for (let i = 1; i <= 6; i++) {
+    const img = document.createElement("img");
+    img.src = `https://source.unsplash.com/600x400/?${encodeURIComponent(q)}&sig=${i}`;
+    img.alt = q;
+    imgBox.appendChild(img);
   }
 
-  // HİÇBİRİ DEĞİLSE → GOOGLE
-  window.open(
-    "https://www.google.com/search?q=" + encodeURIComponent(q),
-    "_blank"
-  );
+  // Her kelime için 4 adet alışveriş ürünü
+  for (let i = 1; i <= 4; i++) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${q.toUpperCase()} Ürün ${i}</h3>
+      <img src="https://source.unsplash.com/400x300/?${encodeURIComponent(q)},product&sig=${i+10}">
+      <p>₺${Math.floor(Math.random()*15000)+500}</p>
+      <button>Satın Al</button>
+    `;
+    shopBox.appendChild(card);
+  }
 }
+
