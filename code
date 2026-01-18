@@ -1,0 +1,63 @@
+<div class="box">
+  <h1>karadayı.ai </h1>
+  <input id="q" placeholder="Uygulama, site veya bilgi ara">
+  <button onclick="go()">Ara</button>
+</div>
+body {
+  background:#0f0f0f;
+  color:white;
+  font-family:Arial;
+}
+
+.box {
+  width:500px;
+  margin:100px auto;
+  text-align:center;
+}
+
+input {
+  width:80%;
+  padding:12px;
+  font-size:16px;
+}
+
+button {
+  padding:12px;
+  font-size:16px;
+  cursor:pointer;
+}
+function go() {
+  let q = document.getElementById("q").value.toLowerCase().trim();
+  if (!q) return;
+
+  const apps = {
+    "youtube": "https://www.youtube.com/results?search_query=",
+    "instagram": "https://www.instagram.com/",
+    "whatsapp": "https://wa.me/",
+    "facebook": "https://www.facebook.com/search/top/?q=",
+    "twitter": "https://twitter.com/search?q=",
+    "x": "https://twitter.com/search?q=",
+    "spotify": "https://open.spotify.com/search/",
+    "tiktok": "https://www.tiktok.com/search?q=",
+    "maps": "https://www.google.com/maps/search/",
+    "harita": "https://www.google.com/maps/search/",
+    "play store": "https://play.google.com/store/search?q=",
+    "app store": "https://www.apple.com/app-store/",
+    "amazon": "https://www.amazon.com/s?k=",
+    "wikipedia": "https://tr.wikipedia.org/wiki/"
+  };
+
+  for (let key in apps) {
+    if (q.startsWith(key)) {
+      let term = q.replace(key, "").trim();
+      window.open(apps[key] + encodeURIComponent(term), "_blank");
+      return;
+    }
+  }
+
+  // HİÇBİRİ DEĞİLSE → GOOGLE
+  window.open(
+    "https://www.google.com/search?q=" + encodeURIComponent(q),
+    "_blank"
+  );
+}
